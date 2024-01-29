@@ -96,6 +96,8 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
 
   let [freeTimes, setFreeTimes] = useState<Date[]>([]);
   useMemo(() => {
+    //filter out past times from freeTimes array to prevent booking in the past
+    const now = new Date();
     const StartOfToday = startOfDay(selectedDate);
     const endOfToday = endOfDay(selectedDate);
     const startHour = set(StartOfToday, { hours: 10 });
@@ -108,9 +110,10 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
       { step: 30 }
     );
 
-    let freeTimes = hoursInDay.filter(
-      (hour) => !reservations.includes(parseISO(hour.toISOString()).toString())
-    );
+    let freeTimes = hoursInDay.filter(hour => {
+      const hourISO = parseISO(hour.toISOString());
+      return !reservations.includes(hourISO.toString()) && hourISO > now; // Filter out past times
+    });
     setFreeTimes(freeTimes);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
