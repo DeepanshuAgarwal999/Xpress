@@ -85,4 +85,5 @@ model Reservation {
   endTime    DateTime?
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   listing    Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
+  otp        Int
 }
