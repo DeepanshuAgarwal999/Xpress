@@ -50,7 +50,7 @@ const ListingEditModal: React.FC<ListingEditModalProps>= (({
             <div className="space-y-4">
               {editFeatures.map((feature,index)=>(
 
-              <div className='flex justify-center items-center'>
+              <div key={"ele"+index} className='flex justify-center items-center'>
                 <input 
                 type="text"
                 onChange={(e)=>{
