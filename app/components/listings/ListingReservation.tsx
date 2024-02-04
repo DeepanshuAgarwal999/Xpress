@@ -97,11 +97,15 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
   let [freeTimes, setFreeTimes] = useState<Date[]>([]);
   useMemo(() => {
     //filter out past times from freeTimes array to prevent booking in the past
-    const now = new Date();
+    function addHours(date:any, hours:any) {
+      date.setTime(date.getTime() + hours * 60 * 60 * 1000);
+      return date;
+    }
+    const now = addHours(new Date(), 1);
     const StartOfToday = startOfDay(selectedDate);
     const endOfToday = endOfDay(selectedDate);
-    const startHour = set(StartOfToday, { hours: 10 });
-    const endHour = set(endOfToday, { hours: 17, minutes: 45 });
+    const startHour = set(StartOfToday, { hours: 1 });
+    const endHour = set(endOfToday, { hours: 19, minutes: 45 });
     let hoursInDay = eachMinuteOfInterval(
       {
         start: startHour,
