@@ -42,14 +42,13 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
     },
     [router]
   );
-  const handleVerify = useCallback(
-    (id: string) => {
+  const verifyOTP= async (id: string) => {
       setDeletingId(id);
 
       axios
         .delete(`/api/reservations/${id}`)
         .then(() => {
-          toast.success('Booking cancelled');
+          toast.success('Booking Verified');
           router.refresh();
         })
         .catch(() => {
@@ -57,10 +56,11 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
         })
         .finally(() => {
           setDeletingId('');
+          window.location.reload()
         });
-    },
-    [router]
-  );
+    }
+  
+ 
 
   return (
     <>
@@ -86,7 +86,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
             reservation={reservation}
             actionId={reservation.id}
             onAction={onCancel}
-            handleVerify={handleVerify} 
+            handleVerify={verifyOTP} 
             disabled={deletingId === reservation.id}
             actionLabel="Cancel guest reservation"
             currentUser={currentUser}

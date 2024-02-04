@@ -5,17 +5,18 @@ import { CiLocationOn } from 'react-icons/ci';
 import useCountries from '@/app/hooks/useCountries';
 import { SafeListing, SafeReservation, SafeUser } from '@/app/types';
 import { useRouter } from 'next/navigation';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { format } from 'date-fns';
 
 import Button from '../components/Button';
-import OTPModal from './OTPModal';
+import toast from 'react-hot-toast';
+import { verify } from 'crypto';
 
 interface ListingCardProps {
   data: SafeListing;
   reservation?: SafeReservation;
   onAction?: (id: string) => void;
-  handleVerify?: (id: string) => void;
+  handleVerify: (id: string) => void;
   disabled?: boolean;
   actionLabel?: string;
   actionId?: string;
@@ -32,6 +33,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
   actionLabel,
   currentUser,
 }) => {
+  const [otps,setOtps] = useState("")
   const router = useRouter();
   const { getByValue } = useCountries();
   const location = getByValue(data?.locationValue);
@@ -68,11 +70,11 @@ const ListingCard: React.FC<ListingCardProps> = ({
   }, [reservation]);
   return (
     <>
-    <div onClick={() => router.push(`/listings/${data.id}`)}
+    <div 
       className="col-span-1 cursor-pointer group"
     >
       <div className="flex flex-col gap-1 w-full">
-        <div className="w-full  relative overflow-hidden rounded-xl aspect-square">
+        <div onClick={() => router.push(`/listings/${data.id}`)} className="w-full  relative overflow-hidden rounded-xl aspect-square">
           <Image
             src={data.imageSrc}
             alt="image"
@@ -81,13 +83,13 @@ const ListingCard: React.FC<ListingCardProps> = ({
           />
           
         </div>
-        <div className=" font-semibold text-lg">
+        <div onClick={() => router.push(`/listings/${data.id}`)} className=" font-semibold text-lg">
           {reservationDate || data.category}  {(currentUser?.id != data.userId && reservation?.totalPrice) && otp } 
         </div>
-        <div className="font-semibold text-neutral-500">
+        <div onClick={() => router.push(`/listings/${data.id}`)} className="font-semibold text-neutral-500">
           {data.title}
         </div>
-        <div className=" text-sm flex gap-2">
+        <div onClick={() => router.push(`/listings/${data.id}`)} className=" text-sm flex gap-2">
           <CiLocationOn size={15} /> {location?.label}, {location?.region}
         </div>
         {/* <div>
@@ -109,15 +111,28 @@ const ListingCard: React.FC<ListingCardProps> = ({
             onClick={handleCancel}
           />
         )}
-        {!(currentUser?.id != data.userId && reservation?.totalPrice) && <Button
+        {!(currentUser?.id != data.userId && reservation?.totalPrice) && <>
+        
+        <input
+        onChange={((e)=>{setOtps(e.target.value)})}
+           placeholder='OTP' type="text" className=' bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-sm focus:ring-blue-500 focus:border-blue-500 block w-full"' />
+        <Button
             disabled={disabled}
             small
             label="Verify"
-            onClick={handleCancel}
-          /> } 
+            onClick={()=>{
+              if(Number(otps)===reservation?.otp){
+                handleVerify(reservation.id)
+              }
+              else{
+                toast.error("Wrong OTP")
+                }
+              }
+            }
+          /> </>} 
       </div>
     </div>
-    <OTPModal/>
+
     </>
   );
 };
