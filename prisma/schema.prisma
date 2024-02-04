@@ -16,20 +16,22 @@ type Feature {
 }
 
 model User {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  name           String?
-  email          String?   @unique
-  emailVerified  DateTime?
-  image          String?
-  hashedPassword String?
-  phoneNumber   String?   @unique
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  favoriteIds    String[]  @db.ObjectId
-
-  accounts     Account[]
-  listings     Listing[]
-  reservations Reservation[]
+  id                String        @id @default(auto()) @map("_id") @db.ObjectId
+  name              String?
+  email             String?       @unique
+  emailVerified     DateTime?
+    verifyToken       String?
+  verifyTokenExpiry DateTime?
+  isVerified         Boolean? @default(false)
+  image             String?
+  hashedPassword    String?
+  phoneNumber       String?       @unique
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  favoriteIds       String[]      @db.ObjectId
+  accounts          Account[]
+  listings          Listing[]
+  reservations      Reservation[]
 }
 
 model Account {
