@@ -56,6 +56,8 @@
     "@types/nodemailer": "^6.4.14",
     "@types/react-date-range": "^1.4.4",
     "@types/uuid": "^9.0.7",
+    "eslint-plugin-import": "^2.29.1",
+    "has": "^1.0.4",
     "prisma": "^4.15.0"
   }
 }
