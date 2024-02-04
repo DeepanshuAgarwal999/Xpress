@@ -8,13 +8,14 @@ import ListingHead from "@/app/components/listings/ListingHead";
 import ListingInfo from "@/app/components/listings/ListingInfo";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import { useRouter } from "next/navigation";
-import { eachDayOfInterval } from "date-fns";
+import { eachDayOfInterval, set } from "date-fns";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import ListingReservation from "@/app/components/listings/ListingReservation";
 import { Feature } from "@prisma/client";
 import Razorpay from 'razorpay';
 import Email from "next-auth/providers/email";
+import { error } from "console";
 
 const initialDateRange = {
   startDate: new Date(),
@@ -88,6 +89,52 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const [totalPrice, setTotalPrice] = useState(listing.price);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
   const [selectedFeatures, setSelectedFeatures] = useState<Feature[]>([]);
+  const [editFeatures, setEditFeatures] = useState(listing.features.map(feature => ({
+    service: feature.service,
+    price: feature.price
+  })))
+  const removeEditfeature = async (index: number) => {
+    let f = []
+    for (let i = 0; i < editFeatures.length; i++) {
+      if (index !== i) {
+        console.log(i)
+        console.log(index)
+        f.push({
+          service: editFeatures[i].service,
+          price: editFeatures[i].price
+        })
+      }
+    }
+    await setEditFeatures(f);
+    console.log(editFeatures)
+  }
+  const addEditfeature = async(s:string, p:number) => {
+    let f = editFeatures
+    await f.push({
+      service: s,
+      price: p
+    })
+   await setEditFeatures(f);
+    console.log(editFeatures)
+  }
+  const  updateEditfeature = async(s:string, p:number,i:number) => {
+    let f = editFeatures
+    f[i].service=s
+    f[i].price=p
+    await setEditFeatures(f);
+    console.log(editFeatures)
+  }
+
+  const applyEdits=()=>{
+    axios.patch(`/api/listings/${listing.id}`,{
+      features:editFeatures
+    }).then((e)=>{
+      console.log(e.data)
+    }).catch((error)=>{toast.error("Something Went Wrong : "+ error)})
+    .finally(()=>{
+      window.location.reload()
+    })
+  }
 
   const onCreateReservation = useCallback(() => {
     const total = selectedFeatures.reduce(
@@ -278,8 +325,14 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
         <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-4 px-8 sm:px-24">
           <ListingInfo
+            currentUser={currentUser}
             features={listing.features}
             addFeature={addSelectedFeatures}
+            editFeatures={editFeatures}
+            addEditFeature={addEditfeature}
+            removeEditFeature={removeEditfeature}
+            updateEditFeature={updateEditfeature}
+            applyEdits={applyEdits}
             user={listing.user}
             category={cate}
             description={listing.description}
