@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { SafeReservation, SafeUser } from '@/app/types';
 import Heading from '@/app/components/Heading';
 import Container from '@/app/components/Container';
-import ListingCard from '@/app/components/listings/ListingCard';
+import ListingCard from '@/app/reservations/ReservationCard';
 
 interface ReservationsClientProps {
   reservations: SafeReservation[];
@@ -21,8 +21,28 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
 }) => {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState('');
-
+  const [otpVis,setOtpVis] = useState(false)
+  const [otp,setOtp] = useState()
   const onCancel = useCallback(
+    (id: string) => {
+      setDeletingId(id);
+
+      axios
+        .delete(`/api/reservations/${id}`)
+        .then(() => {
+          toast.success('Booking cancelled');
+          router.refresh();
+        })
+        .catch(() => {
+          toast.error('Something went wrong.');
+        })
+        .finally(() => {
+          setDeletingId('');
+        });
+    },
+    [router]
+  );
+  const handleVerify = useCallback(
     (id: string) => {
       setDeletingId(id);
 
@@ -43,6 +63,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
   );
 
   return (
+    <>
     <Container>
       <Heading title="Reservations" subtitle="Bookings on your business" />
       <div
@@ -65,6 +86,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
             reservation={reservation}
             actionId={reservation.id}
             onAction={onCancel}
+            handleVerify={handleVerify} 
             disabled={deletingId === reservation.id}
             actionLabel="Cancel guest reservation"
             currentUser={currentUser}
@@ -72,6 +94,7 @@ const ReservationsClient: React.FC<ReservationsClientProps> = ({
         ))}
       </div>
     </Container>
+    </>
   );
 };
 
