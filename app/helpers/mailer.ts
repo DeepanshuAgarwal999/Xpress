@@ -48,8 +48,8 @@ export const sendEmail = async ({
       port: 465,
       service: 'gmail',
       auth: {
-        user: "rupeshmishra813@gmail.com",
-        pass: 'xbxagytdnqgxkbxm'
+        user: process.env.SMTP_MAIL,
+        pass: process.env.SMTP_PASSWORD
       }
     });
 
@@ -57,8 +57,8 @@ export const sendEmail = async ({
         from: "support@thexpresssalon.com",
         to: email,
         subject: emailType === 'VERIFY' ? "Verify your mail" : "Reset your password",
-        html: `<p>Click <a href="${process.env.DOMAIN}/verifyemail?token=${hashedToken}">here</a> to ${emailType === 'VERIFY' ? 'verify your email' : 'reset your password'}
-        or copy and paste the link below in your browser. <br> ${process.env.DOMAIN}/verifyemail?token=${hashedToken}
+        html: `<p>Click <a href="${process.env.NEXT_PUBLIC_BASE_URL}/verifyemail?token=${hashedToken}">here</a> to ${emailType === 'VERIFY' ? 'verify your email' : 'reset your password'}
+        or copy and paste the link below in your browser. <br> ${process.env.NEXT_PUBLIC_BASE_URL}/verifyemail?token=${hashedToken}
         </p>` 
     }
 
