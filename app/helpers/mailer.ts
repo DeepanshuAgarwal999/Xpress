@@ -48,7 +48,7 @@ export const sendEmail = async ({
       port: 465,
       service: 'gmail',
       auth: {
-        user: "thexpresssalon@gmail.com",
+        user: "rupeshmishra813@gmail.com",
         pass: 'xbxagytdnqgxkbxm'
       }
     });

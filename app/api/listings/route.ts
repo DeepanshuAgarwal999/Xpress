@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     // featureOne,
     // featureTwo,
     features,
-    location,
+    // location,
     price,
   } = body;
 
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       // featureOne,
       // featureTwo,
       features,
-      locationValue: location.value,
+      // locationValue: location.value,
       price: parseInt(price, 10),
       userId: currentUser.id,
     },

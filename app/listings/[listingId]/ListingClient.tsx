@@ -315,7 +315,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
         <ListingHead
           title={listing.title}
           imageSrc={listing.imageSrc}
-          location={listing.locationValue}
+          // location={listing.locationValue}
           id={listing.id}
           currentUser={currentUser}
           listing={listing}
@@ -336,7 +336,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
             user={listing.user}
             category={cate}
             description={listing.description}
-            locationValue={listing.locationValue}
+            // locationValue={listing.locationValue}
             featureVisibility={featureVisibility}
           />
           <div className="order-first mb-10 md:order-last md:col-span-3">

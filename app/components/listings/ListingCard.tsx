@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { CiLocationOn } from 'react-icons/ci';
-import useCountries from '@/app/hooks/useCountries';
+// import useCountries from '@/app/hooks/useCountries';
 import { SafeListing, SafeReservation, SafeUser } from '@/app/types';
 import { useRouter } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
@@ -30,8 +30,8 @@ const ListingCard: React.FC<ListingCardProps> = ({
   currentUser,
 }) => {
   const router = useRouter();
-  const { getByValue } = useCountries();
-  const location = getByValue(data?.locationValue);
+  // const { getByValue } = useCountries();
+  // const location = getByValue(data?.locationValue);
 
   const handleCancel = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -86,7 +86,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
           {data.title}
         </div>
         <div className=" text-sm flex gap-2">
-          <CiLocationOn size={15} /> {location?.label}, {location?.region}
+          {/* <CiLocationOn size={15} /> {location?.label}, {location?.region} */}
         </div>
         {/* <div>
           {data.features.map(value => (

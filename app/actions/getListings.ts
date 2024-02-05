@@ -4,13 +4,13 @@ export interface IListingsParams {
   userId?: string;
   startDate?: string;
   startTime?: string;
-  locationValue?: string;
+  // locationValue?: string;
   category?: string;
 }
 
 export default async function getListings(params: IListingsParams) {
   try {
-    const { category, userId, startDate, locationValue } = params;
+    const { category, userId, startDate } = params;
 
     let query: any = {};
 
@@ -21,9 +21,9 @@ export default async function getListings(params: IListingsParams) {
     if (category) {
       query.category = category;
     }
-    if (locationValue) {
-      query.locationValue = locationValue;
-    }
+    // if (locationValue) {
+    //   query.locationValue = locationValue;
+    // }
 
     if (startDate) {
       query.NOT = {

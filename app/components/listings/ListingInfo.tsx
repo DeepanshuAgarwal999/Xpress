@@ -1,5 +1,5 @@
 'use client';
-import useCountries from '@/app/hooks/useCountries';
+// import useCountries from '@/app/hooks/useCountries';
 import { IconType } from 'react-icons';
 import Avatar from '../Avatar';
 import { SafeUser } from '@/app/types';
@@ -22,7 +22,7 @@ interface ListingInfoProps {
     description: string;
   }
   | undefined;
-  locationValue: string;
+  // locationValue: string;
   addFeature: (featureIndex: number) => void;
   editFeatures:any[];
   addEditFeature:(s:string,p:number)=>void;
@@ -37,7 +37,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
   user,
   description,
   category,
-  locationValue,
+  // locationValue,
   features,
   editFeatures,
   addEditFeature,
@@ -49,10 +49,10 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
  
 }) => {
   const[modalVis,setModalVis]=useState(false)
-  const { getByValue } = useCountries();
+  // const { getByValue } = useCountries();
   const featureToAdd = 'Wi-Fi';
 
-  const coordinates = getByValue(locationValue)?.latlng;
+  // const coordinates = getByValue(locationValue)?.latlng;
   return (
     <>
     <div className="col-span-4 flex flex-col gap-8">
