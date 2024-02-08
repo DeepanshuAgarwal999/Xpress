@@ -28,13 +28,6 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
     { id: 2, name: 'Contact', link: '/contact' },
   ];
 
-  const onBusiness = useCallback(() => {
-    if (!currentUser) {
-      return loginModal.onOpen();
-    }
-    bussinessModal.onOpen();
-  }, [currentUser, loginModal, bussinessModal]);
-
   return (
     <div className="w-full z-10 fixed border-none  outline-none  text-gray-400 shadow-sm ">
       <div className="flex flex-row justify-between items-center py-3 px-4 sm:px-20 bg-[#2C2C2C]">
@@ -48,9 +41,6 @@ const Navbar: React.FC<NavbarProps> = ({ currentUser }) => {
             alt="Logo"
           /> 
         </div>
-        {/* <div>
-          <Search />
-        </div> */} 
 
         <UserMenu currentUser={currentUser} />
       </div>

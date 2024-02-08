@@ -28,7 +28,7 @@ import 'react-clock/dist/Clock.css';
 
 import { cn } from '../datepicker/libs/utils';
 import Button from '../Button';
-import { Feature, Reservation } from '@prisma/client';
+import { Feature } from '@prisma/client';
 import { SafeReservation } from '@/app/types';
 
 interface TimeOption {
@@ -53,15 +53,11 @@ interface ListingReservationProps {
 }
 
 const ListingReservation: React.FC<ListingReservationProps> = ({
-  price,
-  dateRange,
-  totalPrice,
   onChangeDate,
   onSubmit,
   onSelect,
   disabled,
   handleTimeSelect,
-  disableDates,
   reserved = [],
   features,
   removeFeature,
@@ -135,10 +131,6 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
 
   return (
     <div className="bg-white rounded-xl border-[1px] border-neutral-200 overflow-hidden">
-      {/* <div className="flex flex-row items-center gap-1 p-4">
-        <div className="text-2xl font-semibold ">Price - ${price}</div>
-      </div>
-      <hr /> */}
       <Calendar
         color="#000"
         minDate={minSelectableDate}

@@ -1,7 +1,4 @@
 'use client';
-import { IconType } from 'react-icons';
-import { SafeUser } from '@/app/types';
-import { Feature } from '@prisma/client';
 import React, { useState } from 'react'
 interface ListingEditModalProps {
     editFeatures:any[];
@@ -23,7 +20,6 @@ const ListingEditModal: React.FC<ListingEditModalProps>= (({
 
    
   }) => {
-    const[modalVis,setModalVis]=useState(false)
   return (
     <>
 

@@ -1,8 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { CiLocationOn } from "react-icons/ci";
-// import useCountries from '@/app/hooks/useCountries';
 import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef,  useCallback, useMemo, useState } from "react";
@@ -50,8 +48,6 @@ const ListingCard: React.FC<ListingCardProps> = ({
   const [otpInput, setOtpInput] = useState(new Array(6).fill(""));
   const [open, setOpen] = useState(false);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
-  // const { getByValue } = useCountries();
-  // const location = getByValue(data?.locationValue);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

@@ -1,5 +1,5 @@
 'use client';
-// import useCountries from '@/app/hooks/useCountries';
+
 import { IconType } from 'react-icons';
 import Avatar from '../Avatar';
 import { SafeUser } from '@/app/types';
@@ -22,7 +22,6 @@ interface ListingInfoProps {
     description: string;
   }
   | undefined;
-  // locationValue: string;
   addFeature: (featureIndex: number) => void;
   editFeatures:any[];
   addEditFeature:(s:string,p:number)=>void;
@@ -35,9 +34,7 @@ interface ListingInfoProps {
 const ListingInfo: React.FC<ListingInfoProps> = ({
   currentUser,
   user,
-  description,
   category,
-  // locationValue,
   features,
   editFeatures,
   addEditFeature,
@@ -49,10 +46,6 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
  
 }) => {
   const[modalVis,setModalVis]=useState(false)
-  // const { getByValue } = useCountries();
-  const featureToAdd = 'Wi-Fi';
-
-  // const coordinates = getByValue(locationValue)?.latlng;
   return (
     <>
     <div className="col-span-4 flex flex-col gap-8">
@@ -121,8 +114,6 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
           description={category?.description}
         />
       )}
-      {/* <hr />
-      <Map center={coordinates} /> */}
     </div>
     {modalVis && <ListingEditModal 
     editFeatures={editFeatures}

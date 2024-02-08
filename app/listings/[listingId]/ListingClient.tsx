@@ -1,21 +1,17 @@
 "use client";
 //@tx-nocheck
 import { Range } from "react-date-range";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { categories } from "@/app/components/navbar/Categories";
 import { SafeListing, SafeUser, SafeReservation } from "@/app/types";
 import ListingHead from "@/app/components/listings/ListingHead";
 import ListingInfo from "@/app/components/listings/ListingInfo";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import { useRouter } from "next/navigation";
-import { eachDayOfInterval, set } from "date-fns";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import ListingReservation from "@/app/components/listings/ListingReservation";
 import { Feature } from "@prisma/client";
-import Razorpay from 'razorpay';
-import Email from "next-auth/providers/email";
-import { error } from "console";
 
 const initialDateRange = {
   startDate: new Date(),
@@ -26,7 +22,6 @@ const initialDateRange = {
 interface ListingClientProps {
   listing: SafeListing & { user: SafeUser };
   currentUser?: SafeUser | null;
-  // reservations?: SafeReservation[];
   reserved?: SafeReservation[];
 }
 
@@ -39,8 +34,6 @@ declare global {
 const ListingClient: React.FC<ListingClientProps> = ({
   listing,
   currentUser,
-
-  // reservations = [],
   reserved = [],
 }) => {
   const loginModal = useLoginModal();
@@ -57,23 +50,6 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const handleTimeSelect = (time: Date) => {
     setSelectedTime(time);
   };
-
-  const disableTime = 0;
-
-  // const disabledDates = useMemo(() => {
-  //   let dates: Date[] = [];
-
-  //   reserved.forEach((reservation: any) => {
-  //     const range = eachDayOfInterval({
-  //       start: new Date(reservation.startDate),
-  //       end: new Date(reservation.startDate),
-  //     });
-
-  //     dates = [...dates, ...range];
-  //   });
-
-  //   return dates;
-  // }, [reserved]);
 
   const disableDates = useMemo(() => {
     const disabledDates: Date[] = reserved.map(
@@ -206,13 +182,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
                   setDateRange(initialDateRange);
                   router.refresh();
                   router.push("/upcoming");
-                  //router.push("/paymentsuccess?paymentid="+response.razorpay_payment_id)
                 }
-
-                // Validate payment at server - using webhooks is a better idea.
-                // alert(response.razorpay_payment_id);
-                // alert(response.razorpay_order_id);
-                // alert(response.razorpay_signature);
               },
               prefill: {
                 name: "Xpress",
@@ -220,7 +190,6 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 contact: currentUser?.phoneNumber,
               },
             };
-            // console.log("HERE");
             const paymentObject = new window.Razorpay(options);
             paymentObject.open();
             paymentObject.on("payment.failed", function () {
@@ -247,33 +216,10 @@ const ListingClient: React.FC<ListingClientProps> = ({
     listing?.id,
   ]);
 
-  // useEffect(() => {
-  //   if (dateRange.startDate && dateRange.endDate) {
-  //     const dayCount = differenceInDays(dateRange.endDate, dateRange.startDate);
-
-  //     if (dayCount && listing.price) {
-  //       setTotalPrice(dayCount * listing.price);
-  //     } else {
-  //       setTotalPrice(listing.price);
-  //     }
-  //   }
-  // }, [dateRange, listing.price]);
-
-  // console.log(disableDates);
-
   const cate = useMemo(() => {
     return categories.find((item) => item.label === listing.category);
   }, [listing.category]);
 
-  // const addFeature1 = (feature: string) => {
-  //   if (feature && !features.includes(feature)) {
-  //     setFeatures((prevFeatures) => [...prevFeatures, feature]);
-  //   }
-  // };
-
-  // const addFeatures = (featureIndex: number) => [
-
-  // ]
   const [featureVisibility, setFeatureVisibility] = useState<boolean[]>(
     listing.features.map(() => true)
   );
@@ -315,7 +261,6 @@ const ListingClient: React.FC<ListingClientProps> = ({
         <ListingHead
           title={listing.title}
           imageSrc={listing.imageSrc}
-          // location={listing.locationValue}
           id={listing.id}
           currentUser={currentUser}
           listing={listing}

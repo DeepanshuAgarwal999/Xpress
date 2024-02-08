@@ -11,14 +11,12 @@ import useSetupBusiness from '@/app/hooks/useSetupBusiness';
 import Heading from '../Heading';
 import { categories } from '../navbar/Categories';
 import CategoryInput from '../inputs/CategoryInput';
-// import CountrySelect from '../inputs/CountrySelect';
 import ImageUpload from '../inputs/ImageUpload';
 import Input from '../inputs/Input';
 import { Feature } from '@prisma/client';
 
 enum STEPS {
   CATEGORY = 0,
-  // LOCATION = 1,
   INFO = 2,
   IMAGES = 3,
   DESCRIPTION = 4,
@@ -54,29 +52,16 @@ const BusinessModal = () => {
   } = useForm<FieldValues>({
     defaultValues: {
       category: '',
-      // location: null,
       time: '',
       imageSrc: '',
       price: 1,
       title: '',
       description: '',
-      // featureOne: '',
-      // featureTwo: '',
       features: [{ service: "", price: 0 }],
     },
   });
   const category = watch('category');
-  // const location = watch('location');
   const imageSrc = watch('imageSrc');
-
-  // const Map = useMemo(
-  //   () =>
-  //     dynamic(() => import('../Map'), {
-  //       ssr: false,
-  //     }),
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   [location]
-  // );
 
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
@@ -167,21 +152,6 @@ const BusinessModal = () => {
       </div>
     </div>
   );
-  // if (step === STEPS.LOCATION) {
-  //   bodyContent = (
-  //     <div className="flex flex-col gap-8">
-  //       <Heading
-  //         title="Where is your business located?"
-  //         subtitle="Help guests find you!"
-  //       />
-  //       <CountrySelect
-  //         value={location}
-  //         onChange={(value) => setCustomValue('location', value)}
-  //       />
-  //       <Map center={location?.latlng} />
-  //     </div>
-  //   );
-  // }
 
   if (step === STEPS.INFO) {
     bodyContent = (
@@ -284,18 +254,7 @@ const BusinessModal = () => {
       <div className="flex flex-col gap-8">
         <Heading
           title="Now, set your  time"
-          // subtitle="Set price and time"
         />
-        {/* <Input
-          id="price"
-          label="Price"
-          formatPrice
-          type="number"
-          disabled={isLoading}
-          register={register}
-          errors={errors}
-          required
-        /> */}
         <Input
           id="time"
           label="Time in hh/mm"

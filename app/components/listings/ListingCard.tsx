@@ -1,8 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { CiLocationOn } from 'react-icons/ci';
-// import useCountries from '@/app/hooks/useCountries';
 import { SafeListing, SafeReservation, SafeUser } from '@/app/types';
 import { useRouter } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
@@ -30,8 +28,6 @@ const ListingCard: React.FC<ListingCardProps> = ({
   currentUser,
 }) => {
   const router = useRouter();
-  // const { getByValue } = useCountries();
-  // const location = getByValue(data?.locationValue);
 
   const handleCancel = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -84,20 +80,6 @@ const ListingCard: React.FC<ListingCardProps> = ({
         </div>
         <div className="font-semibold text-neutral-500">
           {data.title}
-        </div>
-        <div className=" text-sm flex gap-2">
-          {/* <CiLocationOn size={15} /> {location?.label}, {location?.region} */}
-        </div>
-        {/* <div>
-          {data.features.map(value => (
-            // eslint-disable-next-line react/jsx-key
-            <div className="flex  flex-row items-center gap-1">
-              <div className="font-bold text-lg">{value.service}</div>
-            </div>
-          ))}
-        </div> */}
-        <div className="flex  flex-row items-center gap-1">
-          <div className="font-bold text-lg">₹ {price}</div>
         </div>
         {onAction && actionLabel && (
           <Button
