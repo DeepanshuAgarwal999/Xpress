@@ -21,9 +21,6 @@ export default async function getListings(params: IListingsParams) {
     if (category) {
       query.category = category;
     }
-    // if (locationValue) {
-    //   query.locationValue = locationValue;
-    // }
 
     if (startDate) {
       query.NOT = {
@@ -41,7 +38,7 @@ export default async function getListings(params: IListingsParams) {
         },
       };
     }
-    const listings = await prisma.listing.findMany({
+    const listings = await prisma.listing?.findMany({
       where: query,
       orderBy: {
         createdAt: 'desc',
