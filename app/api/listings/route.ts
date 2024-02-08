@@ -17,10 +17,7 @@ export async function POST(request: Request) {
     imageSrc,
     category,
     time,
-    // featureOne,
-    // featureTwo,
     features,
-    // location,
     price,
   } = body;
 
@@ -37,10 +34,7 @@ export async function POST(request: Request) {
       imageSrc,
       category,
       time,
-      // featureOne,
-      // featureTwo,
       features,
-      // locationValue: location.value,
       price: parseInt(price, 10),
       userId: currentUser.id,
     },
