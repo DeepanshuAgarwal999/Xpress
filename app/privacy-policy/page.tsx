@@ -27,22 +27,41 @@ export default function Component() {
         <div className="container space-y-8 px-4 md:px-6">
           <div className="space-y-2 text-sm">
             <p>
-              This Privacy Policy applies to <a href="https://thexpresssalon.com" className="text-blue-800">https://thexpresssalon.com</a>
-              in recognizes the importance of
-              maintaining your privacy.
+              This Privacy Policy applies to{" "}
+              <a
+                href="https://welcome.thexpresssalon.com"
+                className="text-blue-800"
+              >
+                https://thexpresssalon.com
+              </a>
+              in recognizes the importance of maintaining your privacy.
             </p>
             <p>
-              We only ask for personal information when we truly need it to
-              provide a service to you. We collect it by fair and lawful means,
-              with your knowledge and consent. We also let you know why we're
-              collecting it and how it will be used.
+              We value your privacy and appreciate your trust in us. This Policy
+              describes how we treat user information we collect on
+              <a
+                href="https://welcome.thexpresssalon.com"
+                className="text-blue-800"
+              >
+                {" "}
+                https://thexpresssalon.com{" "}
+              </a>{" "}
+              and other offline sources. This Privacy Policy applies to current
+              and former visitors to our website and to our online customers. By
+              visiting and/or using our website, you agree to this Privacy
+              Policy.
             </p>
             <p>
-              We only retain collected information for as long as necessary to
-              provide you with your requested service. What data we store, we'll
-              protect within commercially acceptable means to prevent loss and
-              theft, as well as unauthorized access, disclosure, copying, use or
-              modification.
+              <a
+                href="https://welcome.thexpresssalon.com"
+                className="text-blue-800"
+              >
+                https://thexpresssalon.com{" "}
+              </a>{" "}
+              is a property of The Xpress Salon Pvt. Ltd., an Indian Company
+              registered under the Companies Act, 2013 having its registered
+              office at H NO. 245, Abhinav Changil S/o Ravinder Kumar, VPO
+              Saimpal, Kalanaur, Rohtak – 124113.
             </p>
             <p>
               We don't share any personally identifying information publicly or
@@ -55,11 +74,11 @@ export default function Component() {
         <div className="container flex flex-col gap-2 py-10 px-4 md:px-6">
           <div className="space-y-2 text-sm">
             <h3 className="font-bold">Contact Us</h3>
+            <a href="mailto:thexpresssalon@gmail.com" className="text-sm text-gray-500 dark:text-gray-400">
+              Email: thexpresssalon@gmail.com
+            </a>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Email: contact@example.com
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              Phone: +1 234-567-8901
+              Phone: +91 8199859921
             </p>
           </div>
         </div>
