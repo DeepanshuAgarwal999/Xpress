@@ -1,7 +1,12 @@
+'use client';
+
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const Footer = () => {
+  const router = useRouter();
+
   return (
     <footer className="bg-gray-800 text-white p-8">
       <div className="max-w-6xl mx-auto flex flex-wrap justify-between items-center">
@@ -40,7 +45,7 @@ const Footer = () => {
           <a href="#" className="text-blue-300 hover:text-blue-500">About Us</a>
           <a href="#" className="text-blue-300 hover:text-blue-500">Our Team</a>
           <a href="#" className="text-blue-300 hover:text-blue-500">Careers</a>
-          <a href="#" className="text-blue-300 hover:text-blue-500">Policies</a>
+          <div onClick={()=> router.push('/privacy-policy')} className="text-blue-300 hover:text-blue-500 cursor-pointer">Policies</div>
         </div>
 
         <div className="flex flex-col">
