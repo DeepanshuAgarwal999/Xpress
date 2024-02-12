@@ -3,7 +3,6 @@ import Razorpay from "razorpay";
 import shortid from "shortid";
 import crypto from "crypto";
 
-//import dbConnect from '../../../database/database'
 const instance = new Razorpay({
     key_id: process.env.RAZORPAY_API_KEY,
     key_secret: process.env.RAZORPAY_APT_SECRET,
