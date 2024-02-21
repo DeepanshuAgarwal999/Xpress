@@ -32,6 +32,7 @@ model User {
   accounts          Account[]
   listings          Listing[]
   reservations      Reservation[]
+  role              String?       @default("USER")
 }
 
 model Account {
@@ -66,6 +67,7 @@ model Listing {
   // locationValue String
   userId        String    @db.ObjectId
   price         Int
+  approved      Boolean   @default(false)
   // featureOne String?
   // featureTwo String?
   features      Feature[]

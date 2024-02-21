@@ -62,6 +62,12 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
         >
           Home
         </div>
+        {currentUser?.role=='ADMIN'&&<div
+          onClick={() => router.push('/admin')}
+          className="cursor-pointer text-sm font-semibold hover:text-white"
+        >
+          Admin
+        </div>}
         <div
           onClick={() => router.push('/about')}
           className="cursor-pointer text-sm font-semibold hover:text-white"
