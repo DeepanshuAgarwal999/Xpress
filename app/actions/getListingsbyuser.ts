@@ -13,7 +13,7 @@ export default async function getListings(params: IListingsParams) {
     const { category, userId, startDate } = params;
 
     let query: any = {};
-    query.approved = true;
+    
     if (userId) {
       query.userId = userId;
     }

@@ -22,13 +22,17 @@ export async function POST(request: Request) {
   }
 
   const hashedPassword = await bcrypt.hash(password, 12);
-
+  let role:string = "USER"
+  if(email === 'admin@gmail.com'){
+    role = "ADMIN"
+  }
   const user = await prisma.user.create({
     data: {
       email,
       name,
       hashedPassword,
       phoneNumber,
+      role
     },
   });
   
