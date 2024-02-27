@@ -37,7 +37,6 @@ const ListingClient: React.FC<ListingClientProps> = ({
   reserved = [],
 }) => {
   const loginModal = useLoginModal();
-  console.log(reserved, "reserved");
   const router = useRouter();
 
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -65,52 +64,182 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const [totalPrice, setTotalPrice] = useState(listing.price);
   const [dateRange, setDateRange] = useState<Range>(initialDateRange);
   const [selectedFeatures, setSelectedFeatures] = useState<Feature[]>([]);
-  const [editFeatures, setEditFeatures] = useState(listing.features.map(feature => ({
-    service: feature.service,
-    price: feature.price
-  })))
+  const [editFeatures, setEditFeatures] = useState(
+    listing.features.map((feature) => ({
+      service: feature.service,
+      price: feature.price,
+    }))
+  );
   const removeEditfeature = async (index: number) => {
-    let f = []
+    let f = [];
     for (let i = 0; i < editFeatures.length; i++) {
       if (index !== i) {
-        console.log(i)
-        console.log(index)
+        console.log(i);
+        console.log(index);
         f.push({
           service: editFeatures[i].service,
-          price: editFeatures[i].price
-        })
+          price: editFeatures[i].price,
+        });
       }
     }
     await setEditFeatures(f);
-    console.log(editFeatures)
-  }
-  const addEditfeature = async(s:string, p:number) => {
-    let f = editFeatures
+    console.log(editFeatures);
+  };
+  const addEditfeature = async (s: string, p: number) => {
+    let f = editFeatures;
     await f.push({
       service: s,
-      price: p
-    })
-   await setEditFeatures(f);
-    console.log(editFeatures)
-  }
-  const  updateEditfeature = async(s:string, p:number,i:number) => {
-    let f = editFeatures
-    f[i].service=s
-    f[i].price=p
+      price: p,
+    });
     await setEditFeatures(f);
-    console.log(editFeatures)
-  }
+    console.log(editFeatures);
+  };
+  const updateEditfeature = async (s: string, p: number, i: number) => {
+    let f = editFeatures;
+    f[i].service = s;
+    f[i].price = p;
+    await setEditFeatures(f);
+    console.log(editFeatures);
+  };
 
-  const applyEdits=()=>{
-    axios.patch(`/api/listings/${listing.id}`,{
-      features:editFeatures
-    }).then((e)=>{
-      console.log(e.data)
-    }).catch((error)=>{toast.error("Something Went Wrong : "+ error)})
-    .finally(()=>{
-      window.location.reload()
-    })
-  }
+  const applyEdits = () => {
+    axios
+      .patch(`/api/listings/${listing.id}`, {
+        features: editFeatures,
+      })
+      .then((e) => {
+        console.log(e.data);
+      })
+      .catch((error) => {
+        toast.error("Something Went Wrong : " + error);
+      })
+      .finally(() => {
+        window.location.reload();
+      });
+  };
+
+  // const onCreateReservation = useCallback(() => {
+  //   const total = selectedFeatures.reduce(
+  //     (previous, current) => previous + current.price,
+  //     0
+  //   );
+  //   const totalPriceAfterTax = (total + total * taxRate).toFixed(2);
+  //   console.log({
+  //     totalPrice: totalPriceAfterTax,
+  //     startDate: selectedDate,
+  //     startTime: selectedTime,
+  //     listingId: listing?.id,
+  //     features: selectedFeatures,
+  //   })
+  //   if (!currentUser) {
+  //     return loginModal.onOpen();
+  //   }
+  //   setIsLoading(true);
+  //   axios
+  //     .post("/api/reservations", {
+  //       totalPrice: parseInt(totalPriceAfterTax),
+  //       startDate: selectedDate,
+  //       startTime: selectedTime,
+  //       listingId: listing?.id,
+  //       features: selectedFeatures,
+  //     })
+  //     .then(() => {
+  //       const makePayment = async () => {
+  //         // "use server"
+  //         // console.log("2")
+  //         try {
+  //           const key = process.env.RAZORPAY_API_KEY;
+  //           console.log(key);
+  //           // Make API call to the serverless API
+  //           const data = await fetch("http://localhost:3000/api/razorpay", {
+  //             method: "POST",
+  //             body: JSON.stringify({
+  //               totalPriceAfterTaxid: parseInt(totalPriceAfterTax),
+  //             }),
+  //           });
+  //           console.log(data);
+  //           const { order } = await data.json();
+  //           console.log(order.id);
+  //           const options = {
+  //             key: key as string,
+  //             name: "Xpress",
+  //             currency: order.currency,
+  //             amount: order.amount,
+  //             order_id: order.id,
+  //             description: "Understanding RazorPay Integration",
+  //             // image: logoBase64,
+  //             handler: async function (response: {
+  //               razorpay_payment_id: string;
+  //               razorpay_order_id: any;
+  //               razorpay_signature: any;
+  //             }) {
+  //               console.log("HERE" + response);
+  //               const data = await fetch(
+  //                 "http://localhost:3000/api/paymentverify",
+  //                 {
+  //                   method: "POST",
+  //                   body: JSON.stringify({
+  //                     razorpay_payment_id: response.razorpay_payment_id,
+  //                     razorpay_order_id: response.razorpay_order_id,
+  //                     razorpay_signature: response.razorpay_signature,
+  //                   }),
+  //                 }
+  //               );
+
+  //               const res = await data.json();
+
+  //               console.log("response verify==", res);
+
+  //               if (res?.message == "success") {
+  //                 console.log("redirected.......");
+  //                 toast.success("Success");
+  //                 setDateRange(initialDateRange);
+  //                 router.refresh();
+  //                 router.push("/upcoming");
+  //                 const res = await fetch(
+  //                   "http://localhost:3000/api/paymentregister",
+  //                   {
+  //                     method: "POST",
+  //                     body: JSON.stringify({
+  //                       listingId: listing.id!,
+  //                       price: totalPriceAfterTax,
+  //                     }),
+  //                   }
+  //                 );
+  //                 if (!res) throw new Error();
+  //               }
+  //             },
+  //             prefill: {
+  //               name: "Xpress",
+  //               email: currentUser?.email || "",
+  //               contact: currentUser?.phoneNumber,
+  //             },
+  //           };
+  //           const paymentObject = new window.Razorpay(options);
+  //           paymentObject.open();
+  //           paymentObject.on("payment.failed", function () {
+  //             toast.error("Something went wrong");
+  //           });
+  //         } catch (err) {
+  //           console.log(err);
+  //           toast.error("Something went wrong");
+  //         }
+  //       };
+  //       makePayment();
+  //     })
+  //     .catch(() => toast.error("Something went wrong"))
+  //     .finally(() => {
+  //       setIsLoading(false);
+  //     });
+  // }, [
+  //   totalPrice,
+  //   selectedTime,
+  //   selectedDate,
+  //   router,
+  //   currentUser,
+  //   loginModal,
+  //   listing?.id,
+  // ]);
 
   const onCreateReservation = useCallback(() => {
     const total = selectedFeatures.reduce(
@@ -118,94 +247,56 @@ const ListingClient: React.FC<ListingClientProps> = ({
       0
     );
     const totalPriceAfterTax = (total + total * taxRate).toFixed(2);
-
+    console.log({
+      totalPrice: totalPriceAfterTax,
+      startDate: selectedDate,
+      startTime: selectedTime,
+      listingId: listing?.id,
+      features: selectedFeatures,
+    });
     if (!currentUser) {
       return loginModal.onOpen();
     }
     setIsLoading(true);
-    axios
-      .post("/api/reservations", {
-        totalPrice: parseInt(totalPriceAfterTax),
-        startDate: selectedDate,
-        startTime: selectedTime,
-        listingId: listing?.id,
-        features: selectedFeatures,
-      })
-      .then(() => {
-        const makePayment = async () => {
-          // "use server"
-          try {
-            const key = process.env.RAZORPAY_API_KEY;
-            console.log(key);
-            // Make API call to the serverless API
-            const data = await fetch("https://xpress-nine.vercel.app/api/razorpay", {
-              method: "POST",
-              body: JSON.stringify({
-                totalPriceAfterTaxid: parseInt(totalPriceAfterTax),
-              }),
+    try {
+      const paymentHistory = async () => {
+        const res = await axios.post("/api/reservations", {
+          totalPrice: parseInt(totalPriceAfterTax),
+          startDate: selectedDate,
+          startTime: selectedTime,
+          listingId: listing?.id,
+          features: selectedFeatures,
+        });
+        console.log(res);
+      };
+
+      paymentHistory()
+        .then(() => {
+          fetch("http://localhost:3000/api/paymentregister", {
+            method: "POST",
+            body: JSON.stringify({
+              listingId: listing?.id,
+              price: totalPriceAfterTax,
+              title: listing?.title,
+              category: listing?.category,
+            }),
+          })
+            .then((res) => {
+              if (res) {
+                toast.success("Reserved Successfully");
+                window.location.href = "/upcoming";
+              }
+            })
+            .catch((error) => {
+              console.log(error);
             });
-            const { order } = await data.json();
-            console.log(order.id);
-            const options = {
-              key: key as string,
-              name: "Xpress",
-              currency: order.currency,
-              amount: order.amount,
-              order_id: order.id,
-              description: "Understanding RazorPay Integration",
-              // image: logoBase64,
-              handler: async function (response: {
-                razorpay_payment_id: string;
-                razorpay_order_id: any;
-                razorpay_signature: any;
-              }) {
-                console.log("HERE" + response);
-                const data = await fetch(
-                  "https://xpress-nine.vercel.app/api/paymentverify",
-                  {
-                    method: "POST",
-                    body: JSON.stringify({
-                      razorpay_payment_id: response.razorpay_payment_id,
-                      razorpay_order_id: response.razorpay_order_id,
-                      razorpay_signature: response.razorpay_signature,
-                    }),
-                  }
-                );
-
-                const res = await data.json();
-
-                console.log("response verify==", res);
-
-                if (res?.message == "success") {
-                  console.log("redirected.......");
-                  toast.success("Success");
-                  setDateRange(initialDateRange);
-                  router.refresh();
-                  router.push("/upcoming");
-                }
-              },
-              prefill: {
-                name: "Xpress",
-                email: currentUser?.email || "",
-                contact: currentUser?.phoneNumber,
-              },
-            };
-            const paymentObject = new window.Razorpay(options);
-            paymentObject.open();
-            paymentObject.on("payment.failed", function () {
-              toast.error("Something went wrong");
-            });
-          } catch (err) {
-            console.log(err);
-            toast.error("Something went wrong");
-          }
-        };
-        makePayment();
-      })
-      .catch(() => toast.error("Something went wrong"))
-      .finally(() => {
-        setIsLoading(false);
-      });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (e) {
+      console.log(e);
+    }
   }, [
     totalPrice,
     selectedTime,
@@ -289,6 +380,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
               removeFeature={removeFeature}
               features={selectedFeatures}
               price={listing.price}
+              time={listing.time}
               totalPrice={totalPrice}
               onChangeDate={(value) => setDateRange(value)}
               dateRange={dateRange}
