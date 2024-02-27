@@ -6,6 +6,7 @@ interface Props {
   price: string;
   title: string;
   category: string;
+  amoaunt:number;
 }
 export async function POST(request: Request) {
   const currentUser = await getCurrentUser();
@@ -20,7 +21,7 @@ export async function POST(request: Request) {
   const payment: unknown = await prisma?.paymentHistory.create({
     data: {
       listingId,
-      amount: parseInt(parseFloat(price)),
+      amount: parseInt(parseFloat(price).toString()),
       userId: currentUser.id,
       title,
       category,

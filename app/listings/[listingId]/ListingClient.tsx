@@ -27,9 +27,12 @@ interface ListingClientProps {
 
 declare global {
   interface Window {
-    Razorpay: any; // Specify the correct type for Razorpay if possible
+    Razorpay: unknown;
   }
 }
+
+
+
 
 const ListingClient: React.FC<ListingClientProps> = ({
   listing,
@@ -52,7 +55,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
 
   const disableDates = useMemo(() => {
     const disabledDates: Date[] = reserved.map(
-      (reservation: any) => new Date(reservation.startDate)
+      (reservation: SafeReservation) => new Date(reservation.startDate)
     );
     return disabledDates;
   }, [reserved]);
@@ -70,8 +73,8 @@ const ListingClient: React.FC<ListingClientProps> = ({
       price: feature.price,
     }))
   );
-  const removeEditfeature = async (index: number) => {
-    let f = [];
+  const removeEditfeature =  (index: number) => {
+    const f = [];
     for (let i = 0; i < editFeatures.length; i++) {
       if (index !== i) {
         console.log(i);
@@ -82,23 +85,23 @@ const ListingClient: React.FC<ListingClientProps> = ({
         });
       }
     }
-    await setEditFeatures(f);
+    setEditFeatures(f);
     console.log(editFeatures);
   };
-  const addEditfeature = async (s: string, p: number) => {
-    let f = editFeatures;
-    await f.push({
+  const addEditfeature =  (s: string, p: number) => {
+    const f = editFeatures;
+     f.push({
       service: s,
       price: p,
     });
-    await setEditFeatures(f);
+    setEditFeatures(f);
     console.log(editFeatures);
   };
-  const updateEditfeature = async (s: string, p: number, i: number) => {
-    let f = editFeatures;
+  const updateEditfeature =  (s: string, p: number, i: number) => {
+    const f = editFeatures;
     f[i].service = s;
     f[i].price = p;
-    await setEditFeatures(f);
+    setEditFeatures(f);
     console.log(editFeatures);
   };
 
@@ -380,7 +383,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
               removeFeature={removeFeature}
               features={selectedFeatures}
               price={listing.price}
-              time={listing.time}
+              time={listing.time!}
               totalPrice={totalPrice}
               onChangeDate={(value) => setDateRange(value)}
               dateRange={dateRange}
