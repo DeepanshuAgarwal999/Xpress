@@ -49,6 +49,7 @@ interface ListingReservationProps {
   reserved: SafeReservation[];
   features: Feature[];
   removeFeature: (featureIndex: number) => void;
+  time:string
   
 }
 
@@ -56,6 +57,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
   onChangeDate,
   onSubmit,
   onSelect,
+  time,
   disabled,
   handleTimeSelect,
   reserved = [],
@@ -89,7 +91,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
     addHours(today, 9).toString(),
     addDays(new Date(addHours(today, 4)), 3).toString(),
   ];
-
+  console.log(time)
   let [freeTimes, setFreeTimes] = useState<Date[]>([]);
   useMemo(() => {
     //filter out past times from freeTimes array to prevent booking in the past
@@ -100,7 +102,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
     const now = addHours(new Date(), 1);
     const StartOfToday = startOfDay(selectedDate);
     const endOfToday = endOfDay(selectedDate);
-    const startHour = set(StartOfToday, { hours: 1 });
+    const startHour = set(StartOfToday, { hours:parseInt(time[0]+time[1]) });
     const endHour = set(endOfToday, { hours: 19, minutes: 45 });
     let hoursInDay = eachMinuteOfInterval(
       {
@@ -141,7 +143,7 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
 
       <div>
         <div className="flex flex-col items-center gap-2 mt-4 p-4">
-          <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6  text-md gap-2">
+          <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 text-md gap-2">
             {freeTimes.map((hour, hourIdx) => {
               const isDisabled = reserved.some((reservation) =>
                 isSameMinute(new Date(reservation.startTime), hour)

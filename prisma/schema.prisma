@@ -16,23 +16,24 @@ type Feature {
 }
 
 model User {
-  id                String        @id @default(auto()) @map("_id") @db.ObjectId
+  id                String           @id @default(auto()) @map("_id") @db.ObjectId
   name              String?
-  email             String?       @unique
+  email             String?          @unique
   emailVerified     DateTime?
-    verifyToken       String?
+  verifyToken       String?
   verifyTokenExpiry DateTime?
-  isVerified         Boolean? @default(false)
+  isVerified        Boolean?         @default(false)
   image             String?
   hashedPassword    String?
-  phoneNumber       String?       @unique
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
-  favoriteIds       String[]      @db.ObjectId
+  phoneNumber       String?          @unique
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  favoriteIds       String[]         @db.ObjectId
   accounts          Account[]
   listings          Listing[]
   reservations      Reservation[]
-  role              String?       @default("USER")
+  role              String?          @default("USER")
+  PaymentHistory    PaymentHistory[]
 }
 
 model Account {
@@ -72,8 +73,9 @@ model Listing {
   // featureTwo String?
   features      Feature[]
 
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  reservations Reservation[]
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reservations   Reservation[]
+  PaymentHistory PaymentHistory[]
 }
 
 model Reservation {
@@ -90,4 +92,16 @@ model Reservation {
   user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   listing    Listing   @relation(fields: [listingId], references: [id], onDelete: Cascade)
   otp        Int
+}
+
+model PaymentHistory {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  listingId String   @db.ObjectId
+  amount    Int
+  createdAt DateTime @default(now())
+  title     String
+  category  String
+  user      User     @relation(fields: [userId], references: [id])
+  listing   Listing  @relation(fields: [listingId], references: [id])
 }

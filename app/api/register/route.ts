@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
-import bcrypt from 'bcrypt';
+import { NextResponse } from "next/server";
+import bcrypt from "bcrypt";
 
-import prisma from '@/app/libs/prismadb';
-import { sendEmail } from '@/app/helpers/mailer';
+import prisma from "@/app/libs/prismadb";
+import { sendEmail } from "@/app/helpers/mailer";
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -10,21 +10,20 @@ export async function POST(request: Request) {
 
   const existingUser = await prisma.user.findFirst({
     where: {
-      OR: [
-        {email: email},
-        {phoneNumber: phoneNumber}
-      ],
+      OR: [{ email: email }, { phoneNumber: phoneNumber }],
     },
   });
 
-  if(existingUser){
-    return NextResponse.json({error: "User already registered with this email or phone number."})
+  if (existingUser) {
+    return NextResponse.json({
+      error: "User already registered with this email or phone number.",
+    });
   }
 
   const hashedPassword = await bcrypt.hash(password, 12);
-  let role:string = "USER"
-  if(email === 'admin@gmail.com'){
-    role = "ADMIN"
+  let role: string = "USER";
+  if (email === process.env.ADMIN_EMAIL) {
+    role = "ADMIN";
   }
   const user = await prisma.user.create({
     data: {
@@ -32,11 +31,11 @@ export async function POST(request: Request) {
       name,
       hashedPassword,
       phoneNumber,
-      role
+      role,
     },
   });
-  
-  await sendEmail({email,emailType:'VERIFY',userId:user.id})
+
+  await sendEmail({ email, emailType: "VERIFY", userId: user.id });
 
   return NextResponse.json(user);
 }

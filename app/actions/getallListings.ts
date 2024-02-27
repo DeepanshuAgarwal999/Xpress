@@ -8,11 +8,12 @@ export interface IListingsParams {
   category?: string;
 }
 
-export default async function getListings(params: IListingsParams) {
+export default async function getAllListings(params: IListingsParams) {
   try {
     const { category, userId, startDate } = params;
 
     let query: any = {};
+    // query.approved = true;
     if (userId) {
       query.userId = userId;
     }
