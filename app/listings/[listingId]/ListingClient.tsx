@@ -40,7 +40,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
   const router = useRouter();
 
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState(new Date());
+  const [selectedTime, setSelectedTime] = useState(new Date().setTime(1000));
 
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
