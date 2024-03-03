@@ -75,8 +75,8 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
       nextDay = addHours(nextDay,8-test.getHours())
   }
   console.log(nextDay)
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState(new Date(nextDay.toISOString()));
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const [selectedTime, setSelectedTime] = useState<Date>(new Date(nextDay.toISOString()));
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
     onSelect(date);
