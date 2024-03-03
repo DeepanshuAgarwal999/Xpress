@@ -4,12 +4,14 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Button } from "@mui/material";
+import Link from "next/link";
 
 interface Props {
   listingId: string;
   approved: boolean;
+  userId: string;
 }
-const Approval = ({ listingId, approved }: Props) => {
+const Approval = ({ listingId, approved, userId }: Props) => {
   const router = useRouter();
   async function handleApprove() {
     try {
@@ -40,13 +42,18 @@ const Approval = ({ listingId, approved }: Props) => {
           Unapprove
         </Button>
       ) : (
-        <Button
-          onClick={() => {
-            handleApprove();
-          }}
-        >
-          Approve
-        </Button>
+        <div className="flex gap-4 items-center">
+          <Button
+            onClick={() => {
+              handleApprove();
+            }}
+          >
+            Approve
+          </Button>
+          <Link href={`/admin/verifyaadhaar/${userId}`}>
+            <Button>verify Aadhaar</Button>
+          </Link>
+        </div>
       )}
     </div>
   );

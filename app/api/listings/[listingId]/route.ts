@@ -35,7 +35,7 @@ export async function DELETE(
 export async function PATCH(request: Request, { params }: { params: IParams }) {
   const currentUser = await getCurrentUser();
   const body = await request.json();
-  const { features } = body;
+  const { features ,offTime } = body;
   if (!currentUser) {
     return NextResponse.error();
   }
@@ -50,6 +50,7 @@ export async function PATCH(request: Request, { params }: { params: IParams }) {
     },
     data: {
       features: features,
+      offTime: offTime,
     },
   });
   const updatedListing = await prisma.listing.findUnique({

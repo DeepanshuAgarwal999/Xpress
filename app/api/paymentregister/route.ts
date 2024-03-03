@@ -1,12 +1,11 @@
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import { NextResponse } from "next/server";
-
+import prisma from "@/app/libs/prismadb";
 interface Props {
   listingId: string;
   price: string;
   title: string;
   category: string;
-  amoaunt:number;
 }
 export async function POST(request: Request) {
   const currentUser = await getCurrentUser();
@@ -21,7 +20,7 @@ export async function POST(request: Request) {
   const payment: unknown = await prisma?.paymentHistory.create({
     data: {
       listingId,
-      amount: parseInt(parseFloat(price).toString()),
+      amount: parseInt(price?.toString()),
       userId: currentUser.id,
       title,
       category,

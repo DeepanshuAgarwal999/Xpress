@@ -60,7 +60,7 @@
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.1.0",
     "has": "^1.0.4",
-    "prisma": "^5.9.1",
+    "prisma": "^5.10.2",
     "typescript": "^5.3.3"
   }
 }

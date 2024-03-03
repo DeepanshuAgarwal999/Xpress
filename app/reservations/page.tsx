@@ -1,9 +1,9 @@
-import EmptyState from '@/app/components/EmptyState';
-import ClientOnly from '../ClientOnly';
+import EmptyState from "@/app/components/EmptyState";
+import ClientOnly from "../ClientOnly";
 
-import ReservationsClient from './ReservationClient';
-import getCurrentUser from '@/app/actions/getCurrentUser';
-import getReservations from '@/app/actions/getReservations';
+import ReservationsClient from "./ReservationClient";
+import getCurrentUser from "@/app/actions/getCurrentUser";
+import getReservations from "@/app/actions/getReservations";
 
 const ReservationsPage = async () => {
   const currentUser = await getCurrentUser();
@@ -18,7 +18,7 @@ const ReservationsPage = async () => {
 
   const reservations = await getReservations({ authorId: currentUser.id });
 
-  if (reservations.length === 0) {
+  if (!reservations) {
     return (
       <ClientOnly>
         <EmptyState
@@ -32,7 +32,7 @@ const ReservationsPage = async () => {
   return (
     <ClientOnly>
       <ReservationsClient
-        reservations={reservations}
+        reservations={reservations!}
         currentUser={currentUser}
       />
     </ClientOnly>

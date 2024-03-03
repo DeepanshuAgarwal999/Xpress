@@ -29,6 +29,10 @@ interface ListingInfoProps {
   removeEditFeature:(featureIndex: number) => void;
   applyEdits:()=>void;
   featureVisibility: boolean[];
+  removeOfftime :(i:string)=>void;
+  addOfftime :(i:string)=>void;
+  updateOfftime :(i:string,n:number)=>void;
+  offtimes:string[];
 }
 
 const ListingInfo: React.FC<ListingInfoProps> = ({
@@ -43,6 +47,10 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
   applyEdits,
   addFeature,
   featureVisibility,
+  removeOfftime,
+  addOfftime,
+  updateOfftime,
+  offtimes
  
 }) => {
   const[modalVis,setModalVis]=useState(false)
@@ -123,6 +131,10 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
     applyEdits={applyEdits}
     vis={modalVis}
     setVis={setModalVis}
+    removeOfftime={removeOfftime}
+    addOfftime={addOfftime}
+    updateOfftime={updateOfftime}
+    offtimes={offtimes}
     />}
    
 

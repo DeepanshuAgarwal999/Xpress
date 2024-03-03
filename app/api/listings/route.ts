@@ -19,6 +19,7 @@ export async function POST(request: Request) {
     time,
     features,
     price,
+    offTime
   } = body;
 
   Object.keys(body).forEach((value: any) => {
@@ -37,6 +38,7 @@ export async function POST(request: Request) {
       features,
       price: parseInt(price, 10),
       userId: currentUser.id,
+      offTime,
     },
   });
 
