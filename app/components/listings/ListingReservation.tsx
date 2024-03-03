@@ -65,8 +65,18 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
   time,
   offTime
 }) => {
+  let nextDay = addHours(addDays(new Date().setMinutes(0),0),2)
+  let test = new Date()
+  if(test.getHours() > 19){
+      nextDay = addHours(nextDay,(24 - test.getHours()) + 8)
+  }
+  else if(test.getHours()<10)
+  {
+      nextDay = addHours(nextDay,8-test.getHours())
+  }
+  console.log(nextDay)
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState(new Date());
+  const [selectedTime, setSelectedTime] = useState(new Date(nextDay.toISOString()));
   const handleDateSelect = (date: Date) => {
     setSelectedDate(date);
     onSelect(date);
@@ -90,10 +100,10 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
     addDays(new Date(addHours(today, 4)), 3).toString(),
   ];
 
-  let [freeTimes, setFreeTimes] = useState<Date[]>([]);
+  const  [freeTimes, setFreeTimes] = useState<Date[]>([]);
   useMemo(() => {
     //filter out past times from freeTimes array to prevent booking in the past
-    function addHours(date: any, hours: any) {
+    function addHours(date: Date, hours: number) {
       date.setTime(date.getTime() + hours * 60 * 60 * 1000);
       return date;
     }
