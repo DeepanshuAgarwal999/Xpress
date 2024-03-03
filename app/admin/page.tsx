@@ -16,7 +16,7 @@ interface Props {
 
 const Admin = async ({ searchParams }: Props) => {
   const listings = await getListings(searchParams);
-  console.log(listings);
+  console.log(listings[0].userId);
 
   if (listings.length === 0)
     return (
@@ -131,6 +131,7 @@ const Admin = async ({ searchParams }: Props) => {
                           <Approval
                             approved={item.approved}
                             listingId={item.id}
+                            userId={item.userId}
                           />
                         </td>
                       </tr>

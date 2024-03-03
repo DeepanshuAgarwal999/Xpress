@@ -18,7 +18,7 @@ const Upcoming = async () => {
 
   const reservations = await getReservations({ userId: currentUser.id });
 
-  if (reservations.length === 0) {
+  if (!reservations) {
     return (
       <ClientOnly>
         <EmptyState

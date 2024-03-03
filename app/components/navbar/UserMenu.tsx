@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { useCallback, useState, useRef, useEffect } from 'react';
-import { AiOutlineMenu } from 'react-icons/ai';
-import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useCallback, useState, useRef, useEffect } from "react";
+import { AiOutlineMenu } from "react-icons/ai";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-import useLoginModal from '@/app/hooks/useLoginModal';
-import useRegisterModal from '@/app/hooks/useRegisterModal';
-import { SafeUser } from '@/app/types';
+import useLoginModal from "@/app/hooks/useLoginModal";
+import useRegisterModal from "@/app/hooks/useRegisterModal";
+import { SafeUser } from "@/app/types";
 
-import MenuBox from './MenuBox';
-import Avatar from '../Avatar';
-import useSetupBusiness from '@/app/hooks/useSetupBusiness';
+import MenuBox from "./MenuBox";
+import Avatar from "../Avatar";
+import useSetupBusiness from "@/app/hooks/useSetupBusiness";
 
 interface UserMenuProps {
   currentUser?: SafeUser | null;
@@ -35,7 +35,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
       return loginModal.onOpen();
     }
 
-    router.push('/business')
+    router.push("/business");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loginModal, currentUser]);
 
@@ -46,10 +46,10 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
       }
     };
 
-    document.addEventListener('mousedown', handleOutsideClick);
+    document.addEventListener("mousedown", handleOutsideClick);
 
     return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, []);
 
@@ -57,19 +57,21 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
     <div className="relative">
       <div className="flex flex-row items-center gap-3">
         <div
-          onClick={() => router.push('/')}
+          onClick={() => router.push("/")}
           className="cursor-pointer text-sm font-semibold hover:text-white"
         >
           Home
         </div>
-        {currentUser?.role=='ADMIN'&&<div
-          onClick={() => router.push('/admin')}
-          className="cursor-pointer text-sm font-semibold hover:text-white"
-        >
-          Admin
-        </div>}
+        {currentUser?.role == "ADMIN" && (
+          <div
+            onClick={() => router.push("/admin")}
+            className="cursor-pointer text-sm font-semibold hover:text-white"
+          >
+            Admin
+          </div>
+        )}
         <div
-          onClick={() => router.push('/about')}
+          onClick={() => router.push("/about")}
           className="cursor-pointer text-sm font-semibold hover:text-white"
         >
           About
@@ -136,19 +138,19 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
               <>
                 <MenuBox
                   label="Upcoming"
-                  onClick={() => router.push('/upcoming')}
+                  onClick={() => router.push("/upcoming")}
                 />
                 <MenuBox
                   label="My favorites"
-                  onClick={() => router.push('/favorites')}
+                  onClick={() => router.push("/favorites")}
                 />
                 <MenuBox
                   label="My reservations"
-                  onClick={() => router.push('/reservations')}
+                  onClick={() => router.push("/reservations")}
                 />
                 <MenuBox
                   label="My business"
-                  onClick={() => router.push('/business')}
+                  onClick={() => router.push("/business")}
                 />
                 <MenuBox
                   label="Create your business"
