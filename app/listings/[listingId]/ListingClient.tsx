@@ -306,7 +306,7 @@ const onCreateReservation = useCallback(() => {
 
     paymentHistory()
       .then(() => {
-        fetch("http://localhost:3000/api/paymentregister", {
+        fetch("https://www.thexpresssalon.com/api/paymentregister", {
           method: "POST",
           body: JSON.stringify({
             listingId: listing?.id,
