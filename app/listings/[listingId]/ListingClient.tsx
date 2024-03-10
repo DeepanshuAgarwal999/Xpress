@@ -12,7 +12,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import ListingReservation from "@/app/components/listings/ListingReservation";
 import { Feature } from "@prisma/client";
-import Reviews from "@/app/reviewsClient/page";
+import Reviews from "@/app/reviewsClient/Review";
 
 const initialDateRange = {
   startDate: new Date(),
