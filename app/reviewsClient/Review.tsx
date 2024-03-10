@@ -61,6 +61,9 @@ const ReviewsClient = ({
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
+      const userReserved = await axios.get(`/api/reservations/${listingId}`);
+      console.log(userReserved)
+      if (!userReserved) return toast.error("First reserved");
       if (inputValue.length < 3)
         return toast.error("Value must be greater than 3");
       const sendReview = await axios.post(`/api/reviews/${listingId}`, {
