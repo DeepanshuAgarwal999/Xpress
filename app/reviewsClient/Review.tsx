@@ -55,9 +55,11 @@ const ReviewsClient = ({
       setIsLoading(true);
 
       await axios.get(`/api/reservations/${listingId}`);
-      
+
       if (inputValue.length < 3)
-        return toast.error("Review must be greater than 3");
+        return toast.error("Review must be greater than 3 characters");
+      if (inputValue.length > 150)
+        return toast.error("Review must be less than 150 character");
       const sendReview = await axios.post(`/api/reviews/${listingId}`, {
         userId: userId,
         comment: inputValue,
@@ -130,7 +132,7 @@ const ReviewsClient = ({
           onChange={(e) => setInputValue(e.target.value)}
         />
         <button
-          className="px-4 py-3 bg-black text-white font-semibold rounded-xl"
+          className="px-4 py-3 bg-black text-white font-semibold rounded-xl disabled:pointer-events-none disabled:opacity-50"
           onClick={handleSubmit}
           disabled={isLoading}
         >
@@ -150,45 +152,51 @@ const ReviewsClient = ({
           {reviews?.map((review, i) => (
             <div key={i}>
               <div className="flex justify-between items-center max-sm:text-xs max-sm:gap-2 w-full px-2  border-b border-[#27272C] py-2 my-10">
-                <div className="flex flex-col gap-2">
-                  <h2>
+                <div className="flex flex-col gap-2 ">
+                  <div className="max-w-[350px] truncate">
                     Posted By - &nbsp;
                     <span className="font-semibold">
-                      {review.user?.name || "Anonymous"}
+                      {review.user?.name?.toLocaleUpperCase() || "Anonymous"}
                     </span>
-                  </h2>
+                    <span className="text-xs ml-3">
+                      ( Posted - {timeFormatAgo(review.createdAt)})
+                    </span>
+                  </div>
                   <h1>{review.comment}</h1>
                 </div>
                 <div className="flex flex-col gap-1 ">
                   {review.userId === userId ? (
                     <div className="flex gap-2">
                       {isUpdating === review.id ? (
-                        <Button
+                        <button
                           disabled={isLoading}
-                          label="Save"
+                          className="px-4 py-1.5 bg-black text-white font-semibold rounded-xl disabled:pointer-events-none disabled:opacity-50"
                           onClick={() => handleUpdate(review.id)}
-                        />
+                        >
+                          Save
+                        </button>
                       ) : (
-                        <Button
+                        <button
+                          className="px-4 py-1.5 bg-black text-white font-semibold rounded-xl disabled:pointer-events-none disabled:opacity-50"
                           disabled={isLoading}
                           onClick={() =>
                             handleUpdating(review.comment!, review.id)
                           }
-                          label="Edit"
-                        />
+                        >
+                          Edit
+                        </button>
                       )}
-                      <Button
-                        label="delete"
+                      <button
+                        className="px-4 py-1.5 bg-black text-white font-semibold rounded-xl disabled:pointer-events-none disabled:opacity-50"
                         disabled={isLoading}
                         onClick={() => handleDelete(review.id)}
-                      />
+                      >
+                        delete
+                      </button>
                     </div>
                   ) : (
                     ""
                   )}
-                  <h3 className="text-xs">
-                    Posted - {timeFormatAgo(review.createdAt)}
-                  </h3>
                 </div>
               </div>
             </div>
@@ -205,7 +213,7 @@ const ReviewsClient = ({
           />
           {!isUpdating ? (
             <button
-              className="px-4 py-3 bg-black text-white font-semibold rounded-xl"
+              className="px-4 py-3 bg-black text-white font-semibold rounded-xl disabled:pointer-events-none disabled:opacity-50"
               disabled={isLoading}
               onClick={handleSubmit}
             >
