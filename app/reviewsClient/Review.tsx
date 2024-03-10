@@ -1,15 +1,9 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import EmptyState from "../components/EmptyState";
 import axios from "axios";
-import { previousDay } from "date-fns";
 import toast from "react-hot-toast";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
 import timeFormatAgo from "../libs/utils/TimeFormat";
 import Button from "../components/Button";
-
-// ... (import statements)
 
 interface ReviewType {
   id: string;
@@ -33,8 +27,6 @@ const ReviewsClient = ({
   const [inputValue, setInputValue] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
-  const [refresh, setRefresh] = useState(false);
-  const router = useRouter();
   const ref = useRef<HTMLInputElement>(null);
 
   const handleUpdating = (comment: string, id: string) => {
@@ -56,16 +48,16 @@ const ReviewsClient = ({
       }
     };
     if (listingId) getReviews();
-  }, [listingId]); // Added listingId as a dependency to useEffect;
+  }, [listingId]);
 
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      const userReserved = await axios.get(`/api/reservations/${listingId}`);
-      console.log(userReserved)
-      if (!userReserved) return toast.error("First reserved");
+
+      await axios.get(`/api/reservations/${listingId}`);
+      
       if (inputValue.length < 3)
-        return toast.error("Value must be greater than 3");
+        return toast.error("Review must be greater than 3");
       const sendReview = await axios.post(`/api/reviews/${listingId}`, {
         userId: userId,
         comment: inputValue,
@@ -76,7 +68,10 @@ const ReviewsClient = ({
       } else {
         toast.error("Unable to give review");
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response.status === 400) {
+        toast.error("First avail the service");
+      }
       console.log(error);
     } finally {
       setInputValue("");
@@ -199,7 +194,7 @@ const ReviewsClient = ({
             </div>
           ))}
         </div>
-        <div className="flex gap-2 justify-between mt-10">
+        <div className="flex gap-2 justify-between mt-10 items-center">
           <input
             type="text"
             placeholder="Give a review"

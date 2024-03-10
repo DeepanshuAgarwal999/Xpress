@@ -47,8 +47,7 @@ export async function GET(request: Request, { params }: { params: IParams }) {
     });
   }
 
-  const { reservationId:listingId } = params;
- 
+  const { reservationId: listingId } = params;
 
   if (!listingId || typeof listingId !== "string") {
     throw new Error("Invalid Listing ID");
@@ -64,7 +63,7 @@ export async function GET(request: Request, { params }: { params: IParams }) {
   if (userReservedListing) {
     // User has reserved a seat in the listing
     return NextResponse.json({
-      message: "User has reserved a seat in the listing.",
+      message: "successfully.",
     });
   } else {
     // User has not reserved a seat in the listing
@@ -72,7 +71,7 @@ export async function GET(request: Request, { params }: { params: IParams }) {
       {
         message: "User has not reserved a seat in the listing.",
       },
-      { status: 403 }
+      { status: 400 }
     );
   }
 }
