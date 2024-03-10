@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Range } from "react-date-range";
 import { Calendar } from "react-date-range";
 import {
@@ -126,11 +126,9 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
       return !reservations.includes(hourISO.toString()) && hourISO > now; // Filter out past times
     });
     setFreeTimes(freeTimes);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate]);
-  useEffect(() => {
-    setSelectedTime(freeTimes[0])
-  },[])
 
   const handleTimeClick = (time: Date) => {
     setSelectedTime(time);

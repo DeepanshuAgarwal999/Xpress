@@ -120,11 +120,11 @@ const removeEditfeature = async (index: number) => {
 };
 const addEditfeature = async (s: string, p: number) => {
   let f = editFeatures;
-   f.push({
+  await f.push({
     service: s,
     price: p,
   });
-   setEditFeatures(f);
+  await setEditFeatures(f);
   console.log(editFeatures);
 };
 const updateEditfeature = async (s: string, p: number, i: number) => {
@@ -352,11 +352,12 @@ const addSelectedFeatures = (featureIndex: number) => {
   const selectedFeature = listing.features[featureIndex];
   if (selectedFeature && !selectedFeatures.includes(selectedFeature)) {
     setSelectedFeatures((prevSelectedFeatures) => [
+      ...prevSelectedFeatures,
       selectedFeature,
     ]);
     setFeatureVisibility((prevVisibility) =>
       prevVisibility.map((isVisible, index) =>
-        index === featureIndex ? false : true
+        index === featureIndex ? false : isVisible
       )
     );
   }

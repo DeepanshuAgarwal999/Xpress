@@ -101,7 +101,7 @@ const ListingInfo: React.FC<ListingInfoProps> = ({
                 
                 {` ₹ ${feature.price} `}
                   
-                <div className='flex'>
+                <div className='flex '>
                 <Button label="Add" onClick={() => addFeature(index)} />
                 {currentUser?.id == user.id &&
                 <Button label="Edit" onClick={() => setModalVis(!modalVis)} />}
