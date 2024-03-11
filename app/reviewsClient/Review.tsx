@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import timeFormatAgo from "../libs/utils/TimeFormat";
-import Button from "../components/Button";
+import { SafeUser } from "../types";
 
 interface ReviewType {
   id: string;
@@ -12,16 +12,18 @@ interface ReviewType {
   comment: string | null;
   createdAt: string;
   user: {
-    name: string | null;
+    name: string;
   };
 }
 
 const ReviewsClient = ({
   listingId,
   userId,
+  currentUser
 }: {
   listingId: string;
   userId: string;
+  currentUser: SafeUser | null | undefined;
 }) => {
   const [reviews, setReviews] = useState<ReviewType[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
@@ -61,7 +63,7 @@ const ReviewsClient = ({
       if (inputValue.length > 150)
         return toast.error("Review must be less than 150 character");
       const sendReview = await axios.post(`/api/reviews/${listingId}`, {
-        userId: userId,
+        userId: currentUser?.id,
         comment: inputValue,
       });
       if (sendReview) {
@@ -165,7 +167,7 @@ const ReviewsClient = ({
                   <h1>{review.comment}</h1>
                 </div>
                 <div className="flex flex-col gap-1 ">
-                  {review.userId === userId ? (
+                  {currentUser && (review.userId === currentUser?.id || currentUser?.role ==='ADMIN') ? (
                     <div className="flex gap-2">
                       {isUpdating === review.id ? (
                         <button

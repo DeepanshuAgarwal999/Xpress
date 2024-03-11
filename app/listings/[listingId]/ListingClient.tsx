@@ -289,9 +289,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
     selectedDate,
     router,
     currentUser,
-    loginModa
-    
-    l,
+    loginModal,
     listing?.id,
   ]);
 
@@ -434,7 +432,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
               updateOfftime={updateOfftime}
               offtimes={offTimes}
             />
-            <Reviews listingId={listing.id} userId={listing.userId} />
+            <Reviews listingId={listing.id} userId={listing.userId} currentUser={currentUser} />
           </div>
           <div className="order-first mb-10 md:order-last md:col-span-3">
             <ListingReservation
