@@ -176,6 +176,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
         features: selectedFeatures,
       })
       .then(() => {
+
         const makePayment = async () => {
           // "use server"
           // console.log("2")

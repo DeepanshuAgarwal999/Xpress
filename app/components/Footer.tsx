@@ -41,10 +41,10 @@ const Footer = () => {
 
         <div className="flex flex-col">
           <span className="font-bold text-xl mb-2">Company</span>
-          <a href="#" className="text-blue-300 hover:text-blue-500">Location & Hours</a>
-          <a href="#" className="text-blue-300 hover:text-blue-500">About Us</a>
-          <a href="#" className="text-blue-300 hover:text-blue-500">Our Team</a>
-          <a href="#" className="text-blue-300 hover:text-blue-500">Careers</a>
+          <div onClick={() => router.push('/refundpolicy')} className="text-blue-300 hover:text-blue-500 cursor-pointer">Refund Policy</div>
+          <div onClick={()=> router.push('/about')} className="text-blue-300 hover:text-blue-500 cursor-pointer">About Us</div>
+          <div onClick={()=> router.push('/cancellationpolicy')} className="text-blue-300 hover:text-blue-500 cursor-pointer">Cancellation Policy</div>
+          <div onClick={()=> router.push('/contactus')} className="text-blue-300 hover:text-blue-500 cursor-pointer">Contact us</div>
           <div onClick={()=> router.push('/privacy-policy')} className="text-blue-300 hover:text-blue-500 cursor-pointer">Policies</div>
         </div>
 
