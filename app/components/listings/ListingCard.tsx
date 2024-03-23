@@ -15,7 +15,7 @@ interface ListingCardProps {
   disabled?: boolean;
   actionLabel?: string;
   actionId?: string;
-  currentUser?: SafeUser | null  ;
+  currentUser?: SafeUser | null;
 }
 
 const ListingCard: React.FC<ListingCardProps> = ({
@@ -53,11 +53,14 @@ const ListingCard: React.FC<ListingCardProps> = ({
     if (!reservation) {
       return null;
     }
-    const startTime = new Date(reservation.startTime);
-    const date = new Date(reservation.startDate);
-    if (startTime) {
-      return `${format(startTime, 'PPpp')}`;
-    } else return `${format(date, 'PPpp')}`;
+
+    if (reservation.startTime && reservation.startTime.length > 0) {
+      return reservation.startTime.map((timeSlot, index) => (
+        <div key={index}>
+          {`${format(new Date(timeSlot), 'PPpp')}`}
+        </div>
+      ));
+    }
   }, [reservation]);
   return (
     <div onClick={() => router.push(`/listings/${data.id}`)}
@@ -76,7 +79,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
           </div>
         </div>
         <div className=" font-semibold text-lg">
-          {reservationDate || data.category}  {(currentUser?.id != data.userId && reservation?.totalPrice) && otp } 
+          {reservationDate || data.category}  {(currentUser?.id != data.userId && reservation?.totalPrice) && otp}
         </div>
         <div className="font-semibold text-neutral-500">
           {data.title}
@@ -88,7 +91,7 @@ const ListingCard: React.FC<ListingCardProps> = ({
             label={actionLabel}
             onClick={handleCancel}
           />
-        )} 
+        )}
       </div>
     </div>
   );

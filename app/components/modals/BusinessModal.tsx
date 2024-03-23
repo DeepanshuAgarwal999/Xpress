@@ -63,9 +63,13 @@ const BusinessModal = () => {
 
   useEffect(() => {
     async function getUser() {
-      const { data } = await axios.get("/api/addaadhaar");
-      if (data.aadhaar) {
-        setisAadhaar(true);
+      try {
+        const { data } = await axios.get("/api/addaadhaar");
+        if (data.aadhaar) {
+          setisAadhaar(true);
+        }
+      } catch (err) {
+        console.log(err);
       }
     }
     getUser();
@@ -99,8 +103,12 @@ const BusinessModal = () => {
     const aadhaarBackImg = form.get("aadhaarBackImg");
 
     if (aadhaarFrontImg && aadhaarBackImg) {
-      const frontImageBase64 = await convertImageToBase64(aadhaarFrontImg as File);
-      const backImageBase64 = await convertImageToBase64(aadhaarBackImg as File);
+      const frontImageBase64 = await convertImageToBase64(
+        aadhaarFrontImg as File
+      );
+      const backImageBase64 = await convertImageToBase64(
+        aadhaarBackImg as File
+      );
 
       // Include the Base64-encoded images in the form data
       form.set("aadhaarFrontImg", frontImageBase64);
@@ -114,11 +122,13 @@ const BusinessModal = () => {
     addAadhaar(res);
   };
 
-  const addAadhaar = async (aadhaarinfo:unknown) => {
+  const addAadhaar = async (aadhaarinfo: unknown) => {
     // if (!aadhaar || aadhaar.length !== 12) return;
     try {
       setIsLoading(true);
-      const { data } = await axios.patch("/api/addaadhaar", { ...aadhaarinfo! });
+      const { data } = await axios.patch("/api/addaadhaar", {
+        ...aadhaarinfo!,
+      });
       if (data) {
         toast.success("Aadhaar added successfully");
         setStep(STEPS.INFO);

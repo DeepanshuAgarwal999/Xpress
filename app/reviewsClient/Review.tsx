@@ -126,20 +126,22 @@ const ReviewsClient = ({
       <div className="mt-10 text-center">
         <h1 className="text-2xl font-semibold">No Reviews yet!!</h1>
         <p className="text-xl font-semibold my-5">Be the first one To review</p>
-        <input
-          type="text"
-          placeholder="Give a review"
-          value={inputValue}
-          className="w-full max-w-[300px] md:max-w-[400px] outline-none border-b-2  py-3 px-2 mr-4 "
-          onChange={(e) => setInputValue(e.target.value)}
-        />
-        <button
-          className="px-4 py-3 bg-black text-white font-semibold rounded-xl disabled:pointer-events-none disabled:opacity-50"
-          onClick={handleSubmit}
-          disabled={isLoading}
-        >
-          Share Review
-        </button>
+        <div className="flex flex-col md:flex-row gap-y-3">
+          <input
+            type="text"
+            placeholder="Give a review"
+            value={inputValue}
+            className="w-full max-w-[300px] md:max-w-[400px] outline-none border-b-2  py-3 px-2 mr-4 "
+            onChange={(e) => setInputValue(e.target.value)}
+          />
+          <button
+            className="px-4 py-3 self-end w-fit bg-black text-white font-semibold rounded-xl disabled:pointer-events-none disabled:opacity-50"
+            onClick={handleSubmit}
+            disabled={isLoading}
+          >
+            Share Review
+          </button>
+        </div>
       </div>
     );
   }
@@ -148,12 +150,12 @@ const ReviewsClient = ({
     <div>
       <div className="mt-10 w-full flex flex-col relative">
         <h1 className="max-sm:text-lg sm:text-xl lg:text-3xl border-b py-2 ">
-          Reviews
+          Reviews <span className="text-sm">({reviews.length})</span>
         </h1>
         <div className="max-h-[300px] overflow-y-scroll no-scrollbar">
           {reviews?.map((review, i) => (
             <div key={i}>
-              <div className="flex justify-between items-center max-sm:text-xs max-sm:gap-2 w-full px-2  border-b border-[#27272C] py-2 my-10">
+              <div className="flex justify-between items-center max-sm:text-xs max-sm:gap-2 w-full px-2 border-b border-[#27272C] py-2 my-10">
                 <div className="flex flex-col gap-2 ">
                   <div className="max-w-[350px] truncate">
                     Posted By - &nbsp;

@@ -36,7 +36,7 @@ export async function PATCH(request: Request) {
     console.log(error);
   }
 }
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const currentUser = await getCurrentUser();
     if (!currentUser) {

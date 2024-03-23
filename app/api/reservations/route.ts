@@ -24,6 +24,7 @@ export async function POST(request: Request) {
     return NextResponse.error();
   }
   const otp = generateOTP();
+  const selectedTimeNew = startDate.slice(0, features.length);
   const listingAndReservation = await prisma.listing.update({
     where: {
       id: listingId,
@@ -32,8 +33,8 @@ export async function POST(request: Request) {
       reservations: {
         create: {
           userId: currentUser.id,
-          startDate,
-          startTime,
+          startDate: selectedTimeNew,
+          startTime: selectedTimeNew,
           totalPrice,
           features,
           otp,
