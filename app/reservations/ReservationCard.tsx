@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef,  useCallback, useMemo, useState } from "react";
+import React, { useEffect, useRef, useCallback, useMemo, useState } from "react";
 import { format } from "date-fns";
 
 import Button from "../components/Button";
@@ -54,13 +54,13 @@ const ListingCard: React.FC<ListingCardProps> = ({
 
   const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const newOtpValue = e.target.value;
-  
+
     // Updating the state only if the new value is a single digit or empty (for backspace)
     if (/^[0-9]$/.test(newOtpValue) || newOtpValue === "") {
       const newOtpInput = [...otpInput];
       newOtpInput[index] = newOtpValue;
       setOtpInput(newOtpInput);
-  
+
       // If a value is entered, move to the next field
       if (newOtpValue && index < otpInput.length - 1) {
         inputRefs.current[index + 1]?.focus();
@@ -110,11 +110,14 @@ const ListingCard: React.FC<ListingCardProps> = ({
     if (!reservation) {
       return null;
     }
-    const startTime = new Date(reservation.startTime);
-    const date = new Date(reservation.startDate);
-    if (startTime) {
-      return `${format(startTime, "PPpp")}`;
-    } else return `${format(date, "PPpp")}`;
+
+    let startTimeString = '';
+    if (reservation.startTime.length > 0) {
+      // Choose the first start time from the array
+      const startTime = reservation.startTime[0];
+      startTimeString = format(startTime, "PPpp");
+    }
+    return startTimeString;
   }, [reservation]);
   return (
     <>
@@ -175,16 +178,16 @@ const ListingCard: React.FC<ListingCardProps> = ({
                       return (
                         <React.Fragment>
                           <input
-                          key={index}
-                          ref={el => inputRefs.current[index] = el}
-                          maxLength={1}
-                          value={otpInput[index]}
+                            key={index}
+                            ref={el => inputRefs.current[index] = el}
+                            maxLength={1}
+                            value={otpInput[index]}
                             onChange={(e) => {
-                              handleOtpChange(e,index);
+                              handleOtpChange(e, index);
                             }}
                             type="text"
                             className="w-12 h-12 border-2 rounded bg-transparent outline-none text-center font-semibold text-xl spin-button-none border-gray-400 focus:border-gray-700 focus:text-gray-700 text-gray-400 transition"
-                            onKeyUp={(e)=>{
+                            onKeyUp={(e) => {
                               if (e.key === "Backspace" && index > 0 && otpInput[index] === '') {
                                 inputRefs.current[index - 1]?.focus();
                               }

@@ -27,6 +27,7 @@ const ListingPage = async ({ params }: { params: Iparams }) => {
         listing={listing}
         currentUser={currentUser}
         //  reservations={reserved}
+        // @ts-ignore
         reserved={reserved}
       />
     </ClientOnly>

@@ -1,24 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Range } from "react-date-range";
-import { Calendar } from "react-date-range";
 import {
   addDays,
   addHours,
-  eachDayOfInterval,
-  eachMinuteOfInterval,
-  endOfDay,
-  endOfMonth,
-  endOfWeek,
-  format,
-  isSameMinute,
-  parse,
-  parseISO,
-  set,
-  startOfDay,
-  startOfToday,
-  startOfWeek,
 } from "date-fns";
 
 import "react-date-range/dist/styles.css";
@@ -26,10 +12,10 @@ import "react-date-range/dist/theme/default.css";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 
-import { cn } from "../datepicker/libs/utils";
 import Button from "../Button";
 import { Feature } from "@prisma/client";
 import { SafeReservation } from "@/app/types";
+import ListingReservationModal from "./ListingReservationModal";
 
 interface TimeOption {
   value: string;
@@ -51,10 +37,13 @@ interface ListingReservationProps {
   offTime: string[];
   removeFeature: (featureIndex: number) => void;
   time: string;
+  selectedTimeFeature: Date[]
+  selectedDate: Date;
+  setSelectedDate: (date: Date) => void
+  setSelectedTimeFeature: (date: Date[]) => void | Date[]
 }
 
 const ListingReservation: React.FC<ListingReservationProps> = ({
-  onChangeDate,
   onSubmit,
   onSelect,
   disabled,
@@ -63,77 +52,22 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
   features,
   removeFeature,
   time,
-  offTime
+  offTime,
+  selectedDate,
+  setSelectedDate,
+  selectedTimeFeature,
+  setSelectedTimeFeature,
 }) => {
-  let nextDay = addHours(addDays(new Date().setMinutes(0),0),2)
-  let test = new Date()
-  if(test.getHours() > 19){
-      nextDay = addHours(nextDay,(24 - test.getHours()) + 8)
+  const [index, setIndex] = useState<number | null>(null);
+
+
+  let nextDay = addHours(addDays(new Date().setMinutes(0), 0), 2);
+  let test = new Date();
+  if (test.getHours() > 19) {
+    nextDay = addHours(nextDay, 24 - test.getHours() + 8);
+  } else if (test.getHours() < 10) {
+    nextDay = addHours(nextDay, 8 - test.getHours());
   }
-  else if(test.getHours()<10)
-  {
-      nextDay = addHours(nextDay,8-test.getHours())
-  }
-  console.log(nextDay)
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [selectedTime, setSelectedTime] = useState<Date>(new Date(nextDay.toISOString()));
-  const handleDateSelect = (date: Date) => {
-    setSelectedDate(date);
-    onSelect(date);
-  };
-
-  const minSelectableDate = addDays(new Date(), 0);
-
-  let today = startOfToday();
-  let [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
-  let firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", selectedDate);
-  let days = eachDayOfInterval({
-    start: startOfWeek(firstDayCurrentMonth, { weekStartsOn: 1 }),
-    end: endOfWeek(endOfMonth(firstDayCurrentMonth), { weekStartsOn: 1 }),
-  });
-  const reservations = [
-    addHours(today, 5).toString(),
-    addHours(today, 6).toString(),
-    addHours(today, 7).toString(),
-    addHours(today, 8).toString(),
-    addHours(today, 9).toString(),
-    addDays(new Date(addHours(today, 4)), 3).toString(),
-  ];
-
-  const  [freeTimes, setFreeTimes] = useState<Date[]>([]);
-  useMemo(() => {
-    //filter out past times from freeTimes array to prevent booking in the past
-    function addHours(date: Date, hours: number) {
-      date.setTime(date.getTime() + hours * 60 * 60 * 1000);
-      return date;
-    }
-    const newTime = parseInt(time);
-    const now = addHours(new Date(), 1);
-    const StartOfToday = startOfDay(selectedDate);
-    const endOfToday = endOfDay(selectedDate);
-    const startHour = set(StartOfToday, { hours: newTime });
-    const endHour = set(endOfToday, { hours: 19, minutes: 45 });
-    let hoursInDay = eachMinuteOfInterval(
-      {
-        start: startHour,
-        end: endHour,
-      },
-      { step: 30 }
-    );
-
-    let freeTimes = hoursInDay.filter((hour) => {
-      const hourISO = parseISO(hour.toISOString());
-      return !reservations.includes(hourISO.toString()) && hourISO > now; // Filter out past times
-    });
-    setFreeTimes(freeTimes);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDate]);
-
-  const handleTimeClick = (time: Date) => {
-    setSelectedTime(time);
-    handleTimeSelect(time);
-  };
 
   const taxRate = 0.02;
   const total = features.reduce(
@@ -145,45 +79,35 @@ const ListingReservation: React.FC<ListingReservationProps> = ({
 
   return (
     <div className="bg-white rounded-xl border-[1px] border-neutral-200 overflow-hidden">
-      <Calendar
-        color="#000"
-        minDate={minSelectableDate}
-        date={selectedDate}
-        onChange={handleDateSelect}
-      />
-      <hr />
-
-      <div>
-        <div className="flex flex-col items-center gap-2 mt-4 p-4">
-          <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 text-md gap-2">
-            {freeTimes.map((hour, hourIdx) => {
-              const isDisabled =
-                reserved.some((reservation) =>
-                  isSameMinute(new Date(reservation.startTime), hour)
-                ) || offTime.includes(format(hour, "HH:mm"));
-
-              return (
-                <div key={hourIdx}>
-                  <button
-                    type="button"
-                    className={cn(
-                      "bg-green-200 rounded-lg px-2 text-gray-800 relative hover:border hover:border-green-400 w-[60px] h-[26px]",
-                      selectedTime &&
-                        isSameMinute(selectedTime, hour) &&
-                        "bg-black text-white",
-                      isDisabled && "bg-gray-400 cursor-not-allowed"
-                    )}
-                    onClick={() => handleTimeClick(hour)}
-                    disabled={isDisabled}
-                  >
-                    {format(hour, "HH:mm")}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
+      {features.length > 0 && <h1 className="text-xl font-semibold  p-2">Select Time</h1>}
+      {features.map((feature, index) => (
+        <div key={index} className="feature grid grid-cols-3 py-2 ">
+          <h1 className="text-lg font-semibold px-2 italic capitalize" > {feature.service}</h1>
+          <div className="">₹{feature.price}</div>
+          <button className="text-red-400" onClick={() => removeFeature(index)}>
+            Cancel
+          </button>
+          <button onClick={() => setIndex(index)}>
+            {selectedTimeFeature[index]?.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
+          </button>
         </div>
-      </div>
+      ))}
+      <hr />
+      {index != null && (
+        <ListingReservationModal
+          time={time}
+          offTime={offTime}
+          selectedDate={selectedDate}
+          reserved={reserved}
+          features={features}
+          handleTimeSelect={handleTimeSelect}
+          setSelectedDate={setSelectedDate}
+          onSelect={onSelect}
+          modalKey={index}
+          setIndex={setIndex}
+          setSelectedTimeFeature={setSelectedTimeFeature}
+        />
+      )}
       <hr />
       <div className="flex flex-col p-2">
         <div className="px-2 font-semibold text-sm ">

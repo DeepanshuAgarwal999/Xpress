@@ -31,7 +31,10 @@ const Upcoming = async () => {
 
   return (
     <ClientOnly>
-      <UpcomingClient reservations={reservations} currentUser={currentUser} />
+      <UpcomingClient
+      //@ts-ignore
+       reservations={reservations} 
+       currentUser={currentUser} />
     </ClientOnly>
   );
 };
