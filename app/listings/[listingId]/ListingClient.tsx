@@ -264,7 +264,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
           try {
             const key = process.env.RAZORPAY_API_KEY;
             // Make API call to the serverless API
-            const data = await fetch("https://thexpresssalon.com/api/razorpay", {
+            const data = await fetch("https://book.thexpresssalon.com/api/razorpay", {
               method: "POST",
               body: JSON.stringify({
                 totalPriceAfterTaxid: parseInt(totalPriceAfterTax),
@@ -288,7 +288,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
               }) {
                 console.log("HERE" + response);
                 const data = await fetch(
-                  "https://thexpresssalon.com/api/paymentverify",
+                  "https://book.thexpresssalon.com/api/paymentverify",
                   {
                     method: "POST",
                     body: JSON.stringify({
@@ -304,7 +304,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
                 console.log("response verify==", res);
 
                 if (res?.message == "success") {
-                  fetch("https://thexpresssalon.com/api/paymentregister", {
+                  fetch("https://book.thexpresssalon.com/api/paymentregister", {
                     method: "POST",
                     body: JSON.stringify({
                       listingId: listing?.id,
@@ -328,7 +328,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
                   router.refresh();
                   router.push("/upcoming");
                   const res = await fetch(
-                    "https://thexpresssalon.com/api/paymentregister",
+                    "https://book.thexpresssalon.com/api/paymentregister",
                     {
                       method: "POST",
                       body: JSON.stringify({
@@ -372,72 +372,6 @@ const ListingClient: React.FC<ListingClientProps> = ({
     loginModal,
     listing?.id,
   ]);
-
-  // const onCreateReservation = useCallback(() => {
-  //   const total = selectedFeatures.reduce(
-  //     (previous, current) => previous + current.price,
-  //     0
-  //   );
-  //   const totalPriceAfterTax = (total + total * taxRate).toFixed(2);
-  //   console.log({
-  //     totalPrice: totalPriceAfterTax,
-  //     startDate: selectedDate,
-  //     startTime: selectedTime,
-  //     listingId: listing?.id,
-  //     features: selectedFeatures,
-  //   });
-  //   if (!currentUser) {
-  //     return loginModal.onOpen();
-  //   }
-  //   setIsLoading(true);
-  //   try {
-  //     const paymentHistory = async () => {
-  //       const res = await axios.post("/api/reservations", {
-  //         totalPrice: parseInt(totalPriceAfterTax),
-  //         startDate: selectedDate,
-  //         startTime: selectedTime,
-  //         listingId: listing?.id,
-  //         features: selectedFeatures,
-  //       });
-  //       console.log(res);
-  //     };
-
-  //     paymentHistory()
-  //       .then(() => {
-  //         fetch("http://localhost:3000/api/paymentregister", {
-  //           method: "POST",
-  //           body: JSON.stringify({
-  //             listingId: listing?.id,
-  //             price: totalPriceAfterTax,
-  //             title: listing?.title,
-  //             category: listing?.category,
-  //           }),
-  //         })
-  //           .then((res) => {
-  //             if (res) {
-  //               toast.success("Reserved Successfully");
-  //               window.location.href = "/upcoming";
-  //             }
-  //           })
-  //           .catch((error) => {
-  //             console.log(error);
-  //           });
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }, [
-  //   totalPrice,
-  //   selectedTime,
-  //   selectedDate,
-  //   router,
-  //   currentUser,
-  //   loginModal,
-  //   listing?.id,
-  // ]);
 
   const cate = useMemo(() => {
     return categories.find((item) => item.label === listing.category);

@@ -12,6 +12,7 @@ import { SafeUser } from "@/app/types";
 import MenuBox from "./MenuBox";
 import Avatar from "../Avatar";
 import useSetupBusiness from "@/app/hooks/useSetupBusiness";
+import { useTheme } from "@emotion/react";
 
 interface UserMenuProps {
   currentUser?: SafeUser | null;

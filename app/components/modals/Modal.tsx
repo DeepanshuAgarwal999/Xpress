@@ -95,6 +95,7 @@ const Modal: React.FC<ModalProps> = ({
         mx-auto 
         h-full 
         lg:h-auto
+        bg-
         md:h-auto
         "
         >
